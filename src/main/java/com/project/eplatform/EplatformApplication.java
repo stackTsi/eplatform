@@ -25,7 +25,7 @@ public class EplatformApplication {
 @Bean
     CommandLineRunner run(CustomerRepository customerRepository){
         return args -> {
-            customerRepository.save(new Customer(0,"nguyen","asdf","Vo Ngoc Duy Nguyen","123@gmail.com","613","PhamTheHien","TP.HCM","50000","0919990145"));
+            customerRepository.save(new Customer(0,"nguyen","asdf","Vo Ngoc Duy Nguyen","123@gmail.com","613","PTH","TP.HCM","50000","0919990145"));
         };
 
     }
