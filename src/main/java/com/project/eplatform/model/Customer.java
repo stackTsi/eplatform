@@ -14,20 +14,20 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Table
 public class Customer {
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private int customerID;
 
-    @Column(unique = true)
     @NotEmpty(message="username cannot be empty")
     private String userName;
     private String password;
     private String fullName;
+    @Column(unique = true)
+    @NotEmpty(message="email cannot be empty")
     private String email;
-    private String streetNum;
-    private String streetName;
-    private String city;
-    private String postalCode;
-    private String phoneNumber;
+
+    @ManyToOne
+    private Address address;
 
     public int getCustomerID() {
         return customerID;
@@ -69,43 +69,5 @@ public class Customer {
         this.email = email;
     }
 
-    public String getStreetNum() {
-        return streetNum;
-    }
 
-    public void setStreetNum(String streetNum) {
-        this.streetNum = streetNum;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 }

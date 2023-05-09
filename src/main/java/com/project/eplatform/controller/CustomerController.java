@@ -16,15 +16,39 @@ import java.util.Collection;
 public class CustomerController {
     private final CustomerServiceImpl customerService;
 
+    @PostMapping("/create")
+    public ResponseEntity<?> createCustomer(@RequestBody Customer request){
+        return customerService.createCustomer(request);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Collection<Customer>> listCustomer(@RequestParam(defaultValue = "10") int limit){
         Collection<Customer> customers = customerService.list(limit);
         return ResponseEntity.ok(customers);
     }
 
-    @PostMapping("/create")
-    public Customer createCustomer(@RequestBody Customer request){
-        return customerService.createCustomer(request);
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Customer> getCustomer(@PathVariable("id") int customerID){
+        Customer customer = customerService.getCustomer(customerID);
+        return ResponseEntity.ok(customer);
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int customerID,
+                                                   @RequestBody Customer request){
+        if(customerID != request.getCustomerID()){
+            ResponseEntity.badRequest().build();
+        }
+        Customer updatedCustomer = customerService.updateCustomer(request);
+        if(updatedCustomer == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedCustomer);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteCustomer(@PathVariable("id")int customerID){
+        Boolean customer = customerService.deleteCustomer(customerID);
+        return ResponseEntity.ok(customer);
+    }
 }
