@@ -3,6 +3,7 @@ package com.project.eplatform.service.implementation;
 
 import com.project.eplatform.model.Address;
 import com.project.eplatform.model.Customer;
+import com.project.eplatform.repository.AddressRepository;
 import com.project.eplatform.repository.CustomerRepository;
 import com.project.eplatform.service.CustomerService;
 import jakarta.transaction.Transactional;
@@ -13,11 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @Service
@@ -26,6 +25,7 @@ import static java.lang.Boolean.TRUE;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final AddressRepository addressRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -39,8 +39,24 @@ public class CustomerServiceImpl implements CustomerService {
                 return ResponseEntity.of(Optional.of(response));
             }
         }
+
         String encodedPass = passwordEncoder.encode(customer.getPassword());
         customer.setPassword(encodedPass);
+
+        //first, create the address object to get the address information.
+        Address address = customer.getAddress();
+        //if the new address matches for all fields
+        List<Address> existingAddresses = addressRepository.findByStreetNumAndStreetNameAndWardAndDistrictAndCity(
+                address.getStreetNum(),address.getStreetName(),
+                address.getWard(),address.getDistrict(), address.getCity()
+        );
+        //set the new address into the existing addressID
+        if(!existingAddresses.isEmpty()){
+            Address existingAddress = existingAddresses.get(0);
+            customer.setAddress(existingAddress);
+        } else{ //otherwise, create a new one
+            addressRepository.save(address);
+        }
         customerRepository.save(customer);
         response.put("response",customer);
         return ResponseEntity.ok(response);
@@ -106,7 +122,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Boolean deleteCustomer(int customerID) {
         log.info("Deleting Customer by ID: {}",customerID);
-        customerRepository.deleteById(customerID);
-        return TRUE;
+        Optional<Customer> customer = customerRepository.findById(customerID);
+        if(customer.isPresent()) {
+            Customer c = customer.get();
+            Address address = c.getAddress();
+            List<Customer> customersWithSameAddress = customerRepository.findByAddress(address);
+            customerRepository.deleteById(customerID);
+            if(customersWithSameAddress.size() == 1){
+                log.info("Deleting Address {} from database",address);
+                addressRepository.delete(address);
+            }
+            return TRUE;
+        } else {
+            log.warn("Customer with ID {} not found", customerID);
+            return FALSE;
+        }
+
     }
 }

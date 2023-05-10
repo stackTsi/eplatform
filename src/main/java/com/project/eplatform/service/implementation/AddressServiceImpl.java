@@ -7,14 +7,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import static java.lang.Boolean.TRUE;
 
 @Service
 @Transactional
@@ -22,16 +18,6 @@ import static java.lang.Boolean.TRUE;
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
-
-
-    @Override
-    public ResponseEntity<?> createAddress(Address address) {
-        log.info("Adding new address {}", address.getAddressID());
-        Map<String, Object> response = new HashMap<>();
-        addressRepository.save(address);
-        response.put("response", address);
-        return ResponseEntity.ok(response);
-    }
 
     @Override
     public Collection<Address> list(int limit) {
@@ -42,14 +28,8 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address getAddress(int addressID) {
         log.info("Getting address by ID");
-        return addressRepository.findById(addressID).get();
+        return addressRepository.findById(addressID).orElse(null);
     }
 
 
-    @Override
-    public Boolean deleteAddress(int addressID) {
-        log.info("Deleting Address by ID: {}",addressID);
-        addressRepository.deleteById(addressID);
-        return TRUE;
-    }
 }

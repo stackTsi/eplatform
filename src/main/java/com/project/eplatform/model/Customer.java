@@ -20,6 +20,7 @@ public class Customer {
 
     @NotEmpty(message="username cannot be empty")
     private String userName;
+    @NotEmpty(message="password cannot be empty")
     private String password;
     private String fullName;
     @Column(unique = true)
