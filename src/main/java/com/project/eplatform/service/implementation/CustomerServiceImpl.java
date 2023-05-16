@@ -75,9 +75,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Customer customer) {
-        log.info("Updating customer {}",customer.getCustomerID());
-        Customer existingCustomer = customerRepository.findById(customer.getCustomerID()).orElse(null);
+    public Customer updateCustomer(int customerID, Customer customer) {
+        log.info("Updating customer {}",customerID);
+        Customer existingCustomer = customerRepository.findById(customerID).orElse(null);
        if(existingCustomer == null){
            return null;
         }
@@ -124,17 +124,17 @@ public class CustomerServiceImpl implements CustomerService {
         log.info("Deleting Customer by ID: {}",customerID);
         Optional<Customer> customer = customerRepository.findById(customerID);
         if(customer.isPresent()) {
-            Customer c = customer.get();
+            Customer c = customer.get(); //create a placeholder customer object to get the address
             Address address = c.getAddress();
-            List<Customer> customersWithSameAddress = customerRepository.findByAddress(address);
+            List<Customer> customersWithSameAddress = customerRepository.findByAddress(address); // getting number of customer with the same address
             customerRepository.deleteById(customerID);
-            if(customersWithSameAddress.size() == 1){
+            if(customersWithSameAddress.size() == 1){ // if this is the final customer with that particular address
                 log.info("Deleting Address {} from database",address);
-                addressRepository.delete(address);
+                addressRepository.delete(address); // delete that address from the repository
             }
             return TRUE;
         } else {
-            log.warn("Customer with ID {} not found", customerID);
+            log.warn("Error!Customer with ID {} not found", customerID);
             return FALSE;
         }
 

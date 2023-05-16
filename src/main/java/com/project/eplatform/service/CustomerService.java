@@ -10,6 +10,6 @@ public interface CustomerService {
     ResponseEntity<?> createCustomer(Customer customer);
     Collection<Customer> list(int limit);
     Customer getCustomer(int customerID);
-    Customer updateCustomer(Customer customer);
+    Customer updateCustomer(int customerID,Customer customer);
     Boolean deleteCustomer(int customerID);
 }

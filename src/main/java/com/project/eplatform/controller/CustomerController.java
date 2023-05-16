@@ -2,7 +2,7 @@ package com.project.eplatform.controller;
 
 
 import com.project.eplatform.model.Customer;
-import com.project.eplatform.service.implementation.CustomerServiceImpl;
+import com.project.eplatform.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ import java.util.Collection;
 @RequestMapping("/customer")
 @RequiredArgsConstructor
 public class CustomerController {
-    private final CustomerServiceImpl customerService;
+    private final CustomerService customerService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createCustomer(@RequestBody Customer request){
@@ -37,10 +37,8 @@ public class CustomerController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int customerID,
                                                    @RequestBody Customer request){
-        if(customerID != request.getCustomerID()){
-            ResponseEntity.badRequest().build();
-        }
-        Customer updatedCustomer = customerService.updateCustomer(request);
+
+        Customer updatedCustomer = customerService.updateCustomer(customerID,request);
         if(updatedCustomer == null){
             return ResponseEntity.notFound().build();
         }
