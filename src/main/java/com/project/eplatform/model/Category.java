@@ -1,6 +1,8 @@
 package com.project.eplatform.model;
 
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -13,22 +15,32 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table
-public class Categories {
+public class Category {
+    @NotEmpty(message = "Please input the category name")
+    private String categoryName;
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int categoryID;
 
-    private String categoryName;
-
     @ManyToOne
     @JoinColumn(name = "parent_categoryID")
-    private Categories parentCategory;
+    private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    private List<Categories> subcategories = new ArrayList<>();
+    private List<Category> subcategories = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
     private List<Product> products = new ArrayList<>();
+
+    public Category getParentCategory() {
+        return parentCategory;
+    }
+
+    public void setParentCategory(Category parentCategory) {
+        this.parentCategory = parentCategory;
+    }
+    // depending on future needs, will implement better "subcategory" getter and setter to display and pass to http endpoints
+    // for now, removed those getter and setter to avoid stackoverflow from model conflicts.
 
     public int getCategoryID() {
         return categoryID;
@@ -46,27 +58,5 @@ public class Categories {
         this.categoryName = categoryName;
     }
 
-    public Categories getParentCategory() {
-        return parentCategory;
-    }
 
-    public void setParentCategory(Categories parentCategory) {
-        this.parentCategory = parentCategory;
-    }
-
-    public List<Categories> getSubcategories() {
-        return subcategories;
-    }
-
-    public void setSubcategories(List<Categories> subcategories) {
-        this.subcategories = subcategories;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
 }

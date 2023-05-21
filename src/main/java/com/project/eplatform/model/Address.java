@@ -20,9 +20,11 @@ public class Address {
     private String district;
     private String city;
     private String postalCode;
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int addressID;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "address")
     private List<Customer> customers = new ArrayList<>();
     public String getStreetNum() {

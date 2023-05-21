@@ -1,10 +1,10 @@
 package com.project.eplatform.repository;
 
-import com.project.eplatform.model.Categories;
+import com.project.eplatform.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoriesRepository extends JpaRepository<Categories,Integer> {
+public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
 }

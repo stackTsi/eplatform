@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@Controller
+@RestController
 @RequestMapping("/customer")
 @RequiredArgsConstructor
 public class CustomerController {
@@ -37,7 +37,6 @@ public class CustomerController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int customerID,
                                                    @RequestBody Customer request){
-
         Customer updatedCustomer = customerService.updateCustomer(customerID,request);
         if(updatedCustomer == null){
             return ResponseEntity.notFound().build();

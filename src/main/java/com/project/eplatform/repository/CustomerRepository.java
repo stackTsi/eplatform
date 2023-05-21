@@ -13,5 +13,5 @@ import java.util.List;
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     Customer findByEmail (String email);
     List<Customer> findByAddress (Address address);
-
+    Customer findByUserName(String username);
 }

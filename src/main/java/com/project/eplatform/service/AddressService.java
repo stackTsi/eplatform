@@ -9,6 +9,6 @@ public interface AddressService {
     Collection<Address> list(int limit);
     Address getAddress(int addressID);
 
-    //update method is in CustomerServiceImpl.java : updateCustomer()
+    //update,create and delete method is in CustomerServiceImpl.java : updateCustomer()
 
 }

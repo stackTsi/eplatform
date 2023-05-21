@@ -1,10 +1,13 @@
 package com.project.eplatform.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
@@ -13,14 +16,16 @@ import lombok.NoArgsConstructor;
 @Table
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private int productID;
+    @NotEmpty(message = "Please input the product name!")
     private String productName;
+    @NotEmpty(message ="Please input the product description!")
     private String productDesc;
     private Long price;
     @ManyToOne
-    @JsonIgnore //problem in here
-    private Categories category;
+    private Category category;
+
     public int getProductID() {
         return productID;
     }
