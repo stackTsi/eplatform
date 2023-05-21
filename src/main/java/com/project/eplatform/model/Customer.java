@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -29,6 +31,9 @@ public class Customer {
 
     @ManyToOne
     private Address address;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<PaymentDetails> paymentDetailsList;
 
     public int getCustomerID() {
         return customerID;
