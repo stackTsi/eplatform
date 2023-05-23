@@ -1,5 +1,4 @@
 package com.project.eplatform.service;
 
-
-public interface OrderlineService {
+public interface ShoppingCartService {
 }

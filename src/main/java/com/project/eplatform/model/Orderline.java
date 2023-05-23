@@ -23,13 +23,16 @@ public class Orderline {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date orderDate;
 
-    private int sumPrice;
+    private Long sumPrice;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<CustomerReview> customerReviews;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<PaymentDetails> paymentDetailsList;
+
+    @ManyToOne
+    private ShoppingCart shoppingCart;
     public int getOrderID() {
         return orderID;
     }
@@ -46,11 +49,11 @@ public class Orderline {
         this.orderDate = orderDate;
     }
 
-    public int getSumPrice() {
+    public Long getSumPrice() {
         return sumPrice;
     }
 
-    public void setSumPrice(int sumPrice) {
+    public void setSumPrice(Long sumPrice) {
         this.sumPrice = sumPrice;
     }
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -29,12 +30,17 @@ public class Customer {
     @NotEmpty(message="email cannot be empty")
     private String email;
 
+    @Column(name = "is_sales_staff", columnDefinition = "boolean default false")
+    private boolean isSalesStaff;
+
     @ManyToOne
     private Address address;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = ALL)
     private List<PaymentDetails> paymentDetailsList;
 
+    @OneToMany(mappedBy = "customer",cascade = ALL)
+    private List<ShoppingCart> shoppingCartList;
     public int getCustomerID() {
         return customerID;
     }
@@ -75,5 +81,11 @@ public class Customer {
         this.email = email;
     }
 
+    public boolean isSalesStaff() {
+        return isSalesStaff;
+    }
 
+    public void setSalesStaff(boolean salesStaff) {
+        isSalesStaff = salesStaff;
+    }
 }
