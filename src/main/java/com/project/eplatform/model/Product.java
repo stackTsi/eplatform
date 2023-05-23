@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -23,8 +27,18 @@ public class Product {
     @NotEmpty(message ="Please input the product description!")
     private String productDesc;
     private Long price;
+    private String productImgURL;
+
+
+
     @ManyToOne
     private Category category;
+
+    @OneToMany(mappedBy = "product", cascade = ALL)
+    private List<Inventory> inventories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = ALL)
+    private List<ShoppingCart> shoppingCarts = new ArrayList<>();
 
     public int getProductID() {
         return productID;
@@ -56,6 +70,14 @@ public class Product {
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    public String getProductImgURL() {
+        return productImgURL;
+    }
+
+    public void setProductImgURL(String productImgURL) {
+        this.productImgURL = productImgURL;
     }
 
 }
