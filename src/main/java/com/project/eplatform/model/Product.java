@@ -1,8 +1,10 @@
 package com.project.eplatform.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,19 +26,18 @@ public class Product {
     private int productID;
     @NotEmpty(message = "Please input the product name!")
     private String productName;
-    @NotEmpty(message ="Please input the product description!")
+    @NotEmpty(message = "Please input the product description!")
     private String productDesc;
+    @NotNull(message = "Please input the product price!")
     private Long price;
     private String productImgURL;
 
-
-
+    @NotNull(message = "Please input the quantity to be added in stock!")
+    private int quantityInStock;
     @ManyToOne
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = ALL)
-    private List<Inventory> inventories = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = ALL)
     private List<ShoppingCart> shoppingCarts = new ArrayList<>();
 

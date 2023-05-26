@@ -1,5 +1,6 @@
 package com.project.eplatform.service.implementation;
 
+
 import com.project.eplatform.model.Product;
 import com.project.eplatform.repository.ProductRepository;
 import com.project.eplatform.service.ProductService;
@@ -7,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +28,23 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public ResponseEntity<?> createProduct(Product product) {
-        Map<String,Object> response = new HashMap<>();
-        log.info("Adding a new product: {}", product.getProductName());
+    public ResponseEntity<?> createProduct(Product request) {
+        Map<String, Object> response = new HashMap<>();
+        log.info("Adding a new product: {}", request.getProductName());
 
-        productRepository.save(product);
-        response.put("response",product);
+        //save the product to the repository
+        productRepository.save(request);
+
+        //return the request on the API
+        response.put("response", request);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public Collection<Product> list(int limit) {
         log.info("Fetching list of products:");
-        return productRepository.findAll(PageRequest.of(0,limit)).toList();
+        Pageable pageable = PageRequest.of(0,limit);
+        return productRepository.findNewestProducts(pageable).stream().toList();
     }
 
     @Override
@@ -68,6 +74,9 @@ public class ProductServiceImpl implements ProductService {
         }
         if(product.getProductImgURL() != null){
             existingProduct.setProductImgURL(product.getProductImgURL());
+        }
+        if(product.getQuantityInStock() != 0){
+            existingProduct.setQuantityInStock(product.getQuantityInStock());
         }
         return productRepository.save(existingProduct);
     }

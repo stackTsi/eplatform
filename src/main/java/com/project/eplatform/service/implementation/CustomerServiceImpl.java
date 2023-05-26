@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
                 return ResponseEntity.of(Optional.of(response));
             }
         }
-
+        //password encoder:
         String encodedPass = passwordEncoder.encode(customer.getPassword());
         customer.setPassword(encodedPass);
 

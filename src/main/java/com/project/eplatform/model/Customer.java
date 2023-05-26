@@ -1,5 +1,6 @@
 package com.project.eplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -39,8 +40,10 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = ALL)
     private List<PaymentDetails> paymentDetailsList;
 
-    @OneToMany(mappedBy = "customer",cascade = ALL)
-    private List<ShoppingCart> shoppingCartList;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
+//    private List<ShoppingCart> shoppingCartList;
+
     public int getCustomerID() {
         return customerID;
     }

@@ -13,7 +13,6 @@ import static jakarta.persistence.CascadeType.ALL;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Table
 public class ShoppingCart {
     @Id

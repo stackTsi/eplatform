@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Collection;
 
 public interface ProductService {
-    ResponseEntity<?> createProduct(Product product);
+    ResponseEntity<?> createProduct(Product request);
     Collection<Product> list(int limit);
     Product getProduct(int productID);
     Product updateProduct(int productID,Product product);
