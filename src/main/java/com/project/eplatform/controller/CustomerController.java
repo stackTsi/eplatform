@@ -22,8 +22,9 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Collection<Customer>> listCustomer(@RequestParam(defaultValue = "10") int limit){
+    public ResponseEntity<Collection<Customer>> listCustomer(@RequestParam(defaultValue = "15") int limit){
         Collection<Customer> customers = customerService.list(limit);
+
         return ResponseEntity.ok(customers);
     }
 

@@ -7,10 +7,13 @@ import com.project.eplatform.service.CategoryService;
 import com.project.eplatform.service.FileStorageService;
 import com.project.eplatform.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +30,7 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@ModelAttribute Product request,
                                            @RequestParam(value="productImage") MultipartFile image) throws IOException{
         String imageURL = fileStorageService.saveFile(image);
-        request.setProductImgURL(imageURL);
+        request.setProductImgURL("http://localhost:8080/product/images"+imageURL);
         return productService.createProduct(request);
     }
 
@@ -43,7 +46,7 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{id}") // work in progress
     public ResponseEntity<Product> updateProduct(@PathVariable("id") int productID,
                                                  @RequestBody Product request){
 
@@ -63,5 +66,16 @@ public class ProductController {
     public ResponseEntity<List<Category>> getCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok().body(categories);
+    }
+
+    @GetMapping("/images/{fileName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String fileName) throws FileNotFoundException {
+        // Load the image file from the specified directory
+        Resource file = fileStorageService.loadFileAsResource(fileName);
+
+        // Return the file contents in the response
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(file);
     }
 }

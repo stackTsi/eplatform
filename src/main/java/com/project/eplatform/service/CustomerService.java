@@ -12,4 +12,5 @@ public interface CustomerService {
     Customer getCustomer(int customerID);
     Customer updateCustomer(int customerID,Customer customer);
     Boolean deleteCustomer(int customerID);
+
 }
