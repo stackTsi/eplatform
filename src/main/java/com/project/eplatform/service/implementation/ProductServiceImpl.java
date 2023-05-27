@@ -48,6 +48,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Collection<Product> listIPad(int limit) {
+        log.info("Fetching list of Ipads:");
+        Pageable pageable = PageRequest.of(0,limit);
+        return productRepository.findNewestIPadProducts(pageable).stream().toList();
+    }
+
+    @Override
+    public Collection<Product> listIPhone(int limit) {
+        log.info("Fetching list of Iphones:");
+        Pageable pageable = PageRequest.of(0,limit);
+        return productRepository.findNewestIphonesProducts(pageable).stream().toList();
+    }
+
+    @Override
+    public Collection<Product> listMac(int limit) {
+        log.info("Fetching list of Mac:");
+        Pageable pageable = PageRequest.of(0,limit);
+        return productRepository.findNewestMacProducts(pageable).stream().toList();
+    }
+
+    @Override
     public Product getProduct(int productID) {
         log.info("Fetching product by ID {}",productID);
         return productRepository.findById(productID).orElse(null);

@@ -40,6 +40,22 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    @GetMapping("/listcategory")
+    public ResponseEntity<Collection<Product>> listIpad(@RequestParam(defaultValue = "10") int limit){
+        Collection<Product> ipadProduct = productService.listIPad(limit);
+        return ResponseEntity.ok(ipadProduct);
+    }
+
+    @GetMapping("/listiphone")
+    public ResponseEntity<Collection<Product>> listIPhone(@RequestParam(defaultValue = "10") int limit){
+        Collection<Product> iphoneProduct = productService.listIPhone(limit);
+        return ResponseEntity.ok(iphoneProduct);
+    }
+    @GetMapping("/listmac")
+    public ResponseEntity<Collection<Product>> listMac(@RequestParam(defaultValue = "10") int limit){
+        Collection<Product> macProduct = productService.listMac(limit);
+        return ResponseEntity.ok(macProduct);
+    }
     @GetMapping("/get/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") int productID){
         Product product = productService.getProduct(productID);
