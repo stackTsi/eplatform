@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
+
     @Query("SELECT p FROM Product p ORDER BY p.productID DESC")
     List<Product> findNewestProducts(Pageable pageable);
 
