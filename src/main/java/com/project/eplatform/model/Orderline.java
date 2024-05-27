@@ -45,7 +45,7 @@ public class Orderline {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate() {
         this.orderDate = orderDate;
     }
 

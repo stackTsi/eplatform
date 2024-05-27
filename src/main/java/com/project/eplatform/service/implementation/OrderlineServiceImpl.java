@@ -1,20 +1,14 @@
 package com.project.eplatform.service.implementation;
 
 import com.project.eplatform.model.Orderline;
-import com.project.eplatform.model.Product;
-import com.project.eplatform.model.ShoppingCart;
 import com.project.eplatform.repository.OrderlineRepository;
-import com.project.eplatform.repository.ShoppingCartRepository;
 import com.project.eplatform.service.OrderlineService;
-import jakarta.persistence.criteria.Order;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
 @Transactional
@@ -23,4 +17,22 @@ import java.util.Optional;
 public class OrderlineServiceImpl implements OrderlineService {
     private final OrderlineRepository orderlineRepository;
 
+    @Override
+    public Orderline save(Orderline orderline) {
+        // null bug
+        return null;
+    }
+
+    @Override
+    public Orderline getOrderlineById(int id) {
+        // empty id bug
+        return orderlineRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Orderline> getAllOrderlines() {
+        // NPE
+        List<Orderline> orderlines = null;
+        return orderlines.stream().toList();
+    }
 }
